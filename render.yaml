@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: pulse-sanity
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NEXT_PUBLIC_SANITY_PROJECT_ID
+        sync: false
+      - key: NEXT_PUBLIC_SANITY_DATASET
+        value: production
+      - key: NEXT_PUBLIC_SANITY_API_VERSION
+        value: 2024-06-01
+      - key: NODE_VERSION
+        value: 20.18.0

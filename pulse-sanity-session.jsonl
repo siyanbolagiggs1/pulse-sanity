@@ -1,0 +1,18 @@
+{"role":"user","content":"build something that probes it every 5mins to keep it alive, add the campaign, tho the campaign post preview isnt showing, btw how do we go about the submission"}
+{"role":"assistant","content":"Three things, in order.\n\n1. Keep-alive pinger: I'll add a GitHub Actions scheduled workflow, it's already authenticated on this repo, no new accounts needed."}
+{"role":"assistant","content":"Ran successfully. It'll now fire every 5 minutes automatically."}
+{"role":"assistant","content":"2. Campaign preview image: that 'link icon' placeholder is expected, it's the fallback that shows when a campaign has no cover image, and I didn't upload one for the first entry. Let's fix that and add a second campaign, both with real cover images this time."}
+{"role":"assistant","content":"Published. Let's confirm both campaigns now render on the live wall."}
+{"role":"assistant","content":"That's the ISR cache again, production behaves like stale-while-revalidate: this request triggered a background regen, the next one should show fresh data. Reloading."}
+{"role":"assistant","content":"That confirms the content publish worked, Sanity has it. Let me check Sanity's CDN directly for both docs."}
+{"role":"user","content":"[tool result: both campaigns confirmed present and status=active via a direct Sanity API query]"}
+{"role":"assistant","content":"Found the real issue: the homepage is being fully statically generated at build time (`revalidate = 60` isn't kicking in for background regeneration on Render's self-hosted runtime the way it should). That contradicts the whole 'live from Sanity, no rebuild' pitch, so let's fix it properly rather than just wait it out."}
+{"role":"assistant","content":"Let's verify locally before pushing, to avoid another blind redeploy cycle."}
+{"role":"user","content":"[tool result: next build output shows route \"/\" marked as ○ (Static) even after adding `export const dynamic = \"force-dynamic\"` to CampaignWall.tsx]"}
+{"role":"assistant","content":"Found it, the real bug: route segment config only takes effect in page.tsx/layout.tsx files, not in an arbitrary component. It was silently ignored in CampaignWall.tsx. Moving it to page.tsx."}
+{"role":"assistant","content":"Now rebuilding to confirm the route is actually dynamic this time."}
+{"role":"user","content":"[tool result: next build output now shows route \"/\" marked as ƒ (Dynamic), server-rendered on demand]"}
+{"role":"assistant","content":"/ is now ƒ (Dynamic), server-rendered on every request. Let's verify it locally before pushing."}
+{"role":"user","content":"[tool result: local server started, curl of homepage HTML contains both \"Three Services\" and \"Repost This Cursed\" campaign titles]"}
+{"role":"assistant","content":"Both campaigns render now. Stopping the local server and pushing the fix."}
+{"role":"assistant","content":"Render should auto-deploy this. Let's watch for it and confirm production is fixed."}

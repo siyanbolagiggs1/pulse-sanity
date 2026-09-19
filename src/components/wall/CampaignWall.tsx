@@ -4,8 +4,6 @@ import type { SanityCampaign, SanitySpotlight } from "@/types/sanity";
 import { CampaignCard } from "./CampaignCard";
 import { SpotlightStrip } from "./SpotlightStrip";
 
-export const revalidate = 60;
-
 export async function CampaignWall() {
   const [campaigns, spotlights] = await Promise.all([
     client.fetch<SanityCampaign[]>(campaignsQuery),

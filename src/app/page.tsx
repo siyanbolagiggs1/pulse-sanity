@@ -6,6 +6,8 @@ import { CampaignWall } from "@/components/wall/CampaignWall";
 import { GettingStarted } from "@/components/marketing/GettingStarted";
 import { WhyPulse } from "@/components/marketing/WhyPulse";
 
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <>
